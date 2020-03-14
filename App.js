@@ -8,7 +8,7 @@ import {
 
 const Button = ({action, text}) => {
   return (
-    <TouchableOpacity onPress={action} style={styles.button}>
+    <TouchableOpacity onPress={()=>action()} style={styles.button}>
       <Text style={[styles.title, styles.buttonText]}>{text}</Text>
     </TouchableOpacity>    
   )
@@ -20,17 +20,27 @@ const App = () => {
   const [seconds, setSeconds] = useState(0)
 
   useEffect(()=> {
-    let clock = (timer) ? setInterval(() => setSeconds(seconds+1),1000) : null;
-    return () => clearInterval(clock);
-  },[timer])
+    console.info('useeff')
+    let clock = timer ? setInterval(() => setSeconds(seconds+1),1000): null;
+    return () => timer ? clearInterval(clock): null;
+  });
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Track the time</Text>
       <View style={styles.buttonContainer}>
-        <Button text={'Start'} action={()=> setTimer(true)} />
-        <Button text={'Stop'} action={()=> setTimer(false)}/>
-        <Button text={'Clear'} action={()=> setSeconds(0)}/>
+        <Button text={'Start'} action={()=> {
+          console.info('start timer')
+          setTimer(true)
+          }} />
+        <Button text={'Stop'} action={()=> {
+            console.log('stop timer')
+            setTimer(false)
+          }}/>
+        <Button text={'Clear'} action={()=> {
+          console.info('clear seconds')
+          setSeconds(0)
+        }}/>
       </View>
       <Text style={styles.title}>{seconds}</Text>
       
